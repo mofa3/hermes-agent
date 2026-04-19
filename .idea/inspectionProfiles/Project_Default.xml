@@ -1,0 +1,205 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="AliAccessStaticViaInstance" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AliArrayNamingShouldHaveBracket" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AliControlFlowStatementWithoutBraces" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AliDeprecation" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AliEqualsAvoidNull" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AliLongLiteralsEndingWithLowercaseL" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AliMissingOverrideAnnotation" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AliWrapperTypeEquality" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAbstractClassShouldStartWithAbstractNaming" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAbstractMethodOrInterfaceMethodMustUseJavadoc" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidApacheBeanUtilsCopy" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidCallStaticSimpleDateFormat" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidCommentBehindStatement" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidComplexCondition" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidConcurrentCompetitionRandom" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidDoubleOrFloatEqualCompare" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidManuallyCreateThread" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidMissUseOfMathRandom" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidNegationOperator" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidNewDateGetTime" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidPatternCompileInMethod" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidReturnInFinally" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidStartWithDollarAndUnderLineNaming" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaAvoidUseTimer" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaBigDecimalAvoidDoubleConstructor" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaBooleanPropertyShouldNotStartWithIs" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaClassCastExceptionWithSubListToArrayList" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaClassCastExceptionWithToArray" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaClassMustHaveAuthor" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaClassNamingShouldBeCamel" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaCollectionInitShouldAssignCapacity" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaCommentsMustBeJavadocFormat" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaConcurrentExceptionWithModifyOriginSubList" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaConstantFieldShouldBeUpperCase" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaCountDownShouldInFinally" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaDontModifyInForeachCircle" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaEnumConstantsMustHaveComment" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaExceptionClassShouldEndWithException" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaIbatisMethodQueryForList" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaLockShouldWithTryFinally" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaLowerCamelCaseVariableNaming" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaMethodReturnWrapperType" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaMethodTooLong" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaPackageNaming" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaPojoMustOverrideToString" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaPojoMustUsePrimitiveField" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaPojoNoDefaultValue" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaRemoveCommentedCode" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaServiceOrDaoClassShouldEndWithImpl" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaStringConcat" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaSwitchStatement" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaTestClassShouldEndWithTestNaming" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaThreadLocalShouldRemove" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaThreadPoolCreation" enabled="false" level="BLOCKER" enabled_by_default="false" />
+    <inspection_tool class="AlibabaThreadShouldSetName" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaTransactionMustHaveRollback" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaUndefineMagicConstant" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaUnsupportedExceptionWithModifyAsList" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlibabaUseQuietReferenceNotation" enabled="false" level="MAJOR" enabled_by_default="false" />
+    <inspection_tool class="AlibabaUseRightCaseForDateFormat" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="AlipayHardCodeAccountRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AlipayLogRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,com.github.pagehelper.page.PageMethod,startPage" />
+    </inspection_tool>
+    <inspection_tool class="AvoidConstantsInterface" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AvoidDeeplyNestedIfStmts" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AvoidInstanceofChecksInCatchClause" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AvoidPrintStackTrace" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AvoidProtectedFieldInFinalClass" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AvoidStartWithDollarAndUnderLineNamingRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AvoidSynchronizedAtMethodLevel" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="BigIntegerInstantiation" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="BooleanInstantiation" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="BooleanPropertyShouldNotStartWithIsRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="BrokenNullCheck" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ClassCastExceptionWithSubListToArrayListRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ClassCastExceptionWithToArray" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ClassNamingShouldBeCamelRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CloudengineUpgradeTo3_2_8_0" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CollapsibleIfStatements" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CommentsMustBeJavadocFormatRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ConsecutiveLiteralAppends" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ConstantFieldShouldBeUpperCaseRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DefaultLabelNotLastInSwitchStmt" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DontModifyInForeachCircleRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DontUseDouble" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DuplicatedCode" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="EmptyStaticInitializer" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="EmptySwitchStatements" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="EmptySynchronizedBlock" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="FasttextSecurityIssue" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="FinalFieldCouldBeStatic" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ImmutableField" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="InefficientEmptyStringCheck" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="InefficientStringBuffering" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="InnerClassMayBeStatic" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignorableAnnotations">
+        <set>
+          <option value="lombok.Data" />
+          <option value="org.junit.jupiter.api.Nested" />
+        </set>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="InsufficientStringBufferDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="TOP_LEVEL_CLASS_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="" />
+        </value>
+      </option>
+      <option name="INNER_CLASS_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="" />
+        </value>
+      </option>
+      <option name="METHOD_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
+        </value>
+      </option>
+      <option name="FIELD_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="" />
+        </value>
+      </option>
+      <option name="IGNORE_DEPRECATED" value="false" />
+      <option name="IGNORE_JAVADOC_PERIOD" value="true" />
+      <option name="IGNORE_DUPLICATED_THROWS" value="false" />
+      <option name="IGNORE_POINT_TO_ITSELF" value="false" />
+      <option name="myAdditionalJavadocTags" value="date,version:" />
+    </inspection_tool>
+    <inspection_tool class="JavadocDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ADDITIONAL_TAGS" value="date,version:" />
+    </inspection_tool>
+    <inspection_tool class="JumbledIncrementer" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LoggerIsNotStaticFinal" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="MapOrSetKeyShouldOverrideHashCodeEquals" enabled="false" level="CRITICAL" enabled_by_default="false" />
+    <inspection_tool class="MissingJavadoc" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="PACKAGE_SETTINGS">
+        <Options>
+          <option name="ENABLED" value="false" />
+        </Options>
+      </option>
+      <option name="MODULE_SETTINGS">
+        <Options>
+          <option name="ENABLED" value="false" />
+        </Options>
+      </option>
+      <option name="TOP_LEVEL_CLASS_SETTINGS">
+        <Options>
+          <option name="ENABLED" value="false" />
+        </Options>
+      </option>
+      <option name="INNER_CLASS_SETTINGS">
+        <Options>
+          <option name="ENABLED" value="false" />
+        </Options>
+      </option>
+      <option name="METHOD_SETTINGS">
+        <Options>
+          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
+          <option name="ENABLED" value="false" />
+        </Options>
+      </option>
+      <option name="FIELD_SETTINGS">
+        <Options>
+          <option name="ENABLED" value="false" />
+        </Options>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="MissingStaticMethodInNonInstantiatableClass" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="NonThreadSafeSingleton" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="OptimizableToArrayCall" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ProperLogger" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SimplifyBooleanExpressions" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SingularField" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SpringJavaInjectionPointsAutowiringInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="StringInstantiation" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SwitchStatementRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TestClassShouldEndWithTestNamingRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnnecessaryCaseChange" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnnecessaryConversionTemporary" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnnecessaryLocalBeforeReturn" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedFormalParameter" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedNullCheckInEquals" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedPrivateField" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UpperEllRule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UseCollectionIsEmpty" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UseEqualsToCompareStrings" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UseIndexOfChar" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UseLocaleWithCaseConversions" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UseStringBufferLength" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UselessOverridingMethod" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UselessStringValueOf" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>
