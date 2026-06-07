@@ -219,7 +219,7 @@ async function send() {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, session_id: sessionId }),
+      body: JSON.stringify({ message, session_id: sessionId, model: 'deepseek-v4-pro' }),
     });
     const data = await res.json();
 
