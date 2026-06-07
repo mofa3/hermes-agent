@@ -47,7 +47,6 @@ _EXCLUDED_SUFFIXES = (
 # File names to skip (runtime state that's meaningless on another machine)
 _EXCLUDED_NAMES = {
     "gateway.pid",
-    "cron.pid",
 }
 
 

@@ -1311,31 +1311,11 @@ class AIAgent:
                 # honcho plugin automatically.  Just having the config file
                 # is not enough — the user may have disabled Honcho or the
                 # file may be from a different tool.
-                if not _mem_provider_name:
-                    try:
-                        from plugins.memory.honcho.client import HonchoClientConfig as _HCC
-                        _hcfg = _HCC.from_global_config()
-                        if _hcfg.enabled and (_hcfg.api_key or _hcfg.base_url):
-                            _mem_provider_name = "honcho"
-                            # Persist so this only auto-migrates once
-                            try:
-                                from hermes_cli.config import load_config as _lc, save_config as _sc
-                                _cfg = _lc()
-                                _cfg.setdefault("memory", {})["provider"] = "honcho"
-                                _sc(_cfg)
-                            except Exception:
-                                pass
-                            if not self.quiet_mode:
-                                print("  ✓ Auto-migrated Honcho to memory provider plugin.")
-                                print("    Your config and data are preserved.\n")
-                    except Exception:
-                        pass
 
                 if _mem_provider_name:
                     from agent.memory_manager import MemoryManager as _MemoryManager
-                    from plugins.memory import load_memory_provider as _load_mem
                     self._memory_manager = _MemoryManager()
-                    _mp = _load_mem(_mem_provider_name)
+                    _mp = None
                     if _mp and _mp.is_available():
                         self._memory_manager.add_provider(_mp)
                     if self._memory_manager.providers:
@@ -1402,11 +1382,6 @@ class AIAgent:
 
         # Skills config: nudge interval for skill creation reminders
         self._skill_nudge_interval = 10
-        try:
-            skills_config = _agent_cfg.get("skills", {})
-            self._skill_nudge_interval = int(skills_config.get("creation_nudge_interval", 10))
-        except Exception:
-            pass
 
         # Tool-use enforcement config: "auto" (default — matches hardcoded
         # model list), true (always), false (never), or list of substrings.
@@ -1507,13 +1482,6 @@ class AIAgent:
             pass
 
         if _engine_name != "compressor":
-            # Try loading from plugins/context_engine/<name>/
-            try:
-                from plugins.context_engine import load_context_engine
-                _selected_engine = load_context_engine(_engine_name)
-            except Exception as _ce_load_err:
-                logger.debug("Context engine load from plugins/context_engine/: %s", _ce_load_err)
-
             # Try general plugin system as fallback
             if _selected_engine is None:
                 try:
@@ -3283,7 +3251,7 @@ class AIAgent:
         result's content once the current tool batch finishes. The model
         sees the steer as part of the tool output on its next iteration.
 
-        Thread-safe: callable from gateway/CLI/TUI threads. Multiple calls
+        Thread-safe: callable from CLI threads. Multiple calls
         before the drain point concatenate with newlines.
 
         Args:
@@ -7160,8 +7128,6 @@ class AIAgent:
         known reasoning-capable model families and direct Nous Portal.
         """
         if "nousresearch" in self._base_url_lower:
-            return True
-        if "ai-gateway.vercel.sh" in self._base_url_lower:
             return True
         if "models.github.ai" in self._base_url_lower or "api.githubcopilot.com" in self._base_url_lower:
             try:

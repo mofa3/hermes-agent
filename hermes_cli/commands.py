@@ -134,19 +134,14 @@ COMMAND_REGISTRY: list[CommandDef] = [
     CommandDef("toolsets", "List available toolsets", "Tools & Skills",
                cli_only=True),
     CommandDef("skills", "Search, install, inspect, or manage skills",
-               "Tools & Skills", cli_only=True,
-               subcommands=("search", "browse", "inspect", "install")),
-    CommandDef("cron", "Manage scheduled tasks", "Tools & Skills",
-               cli_only=True, args_hint="[subcommand]",
-               subcommands=("list", "add", "create", "edit", "pause", "resume", "run", "remove")),
+                "Tools & Skills", cli_only=True,
+                subcommands=("search", "browse", "inspect", "install")),
     CommandDef("reload", "Reload .env variables into the running session", "Tools & Skills"),
     CommandDef("reload-mcp", "Reload MCP servers from config", "Tools & Skills",
                aliases=("reload_mcp",)),
     CommandDef("browser", "Connect browser tools to your live Chrome via CDP", "Tools & Skills",
-               cli_only=True, args_hint="[connect|disconnect|status]",
-               subcommands=("connect", "disconnect", "status")),
-    CommandDef("plugins", "List installed plugins and their status",
-               "Tools & Skills", cli_only=True),
+                cli_only=True, args_hint="[connect|disconnect|status]",
+                subcommands=("connect", "disconnect", "status")),
 
     # Info
     CommandDef("commands", "Browse all commands and skills (paginated)", "Info",
@@ -156,9 +151,7 @@ COMMAND_REGISTRY: list[CommandDef] = [
                gateway_only=True),
     CommandDef("usage", "Show token usage and rate limits for the current session", "Info"),
     CommandDef("insights", "Show usage insights and analytics", "Info",
-               args_hint="[days]"),
-    CommandDef("platforms", "Show gateway/messaging platform status", "Info",
-               cli_only=True, aliases=("gateway",)),
+                args_hint="[days]"),
     CommandDef("copy", "Copy the last assistant response to clipboard", "Info",
                cli_only=True, args_hint="[number]"),
     CommandDef("paste", "Attach clipboard image from your clipboard", "Info",
@@ -451,299 +444,6 @@ def _clamp_command_names(
 
 # Backward-compat alias.
 _clamp_telegram_names = _clamp_command_names
-
-
-# ---------------------------------------------------------------------------
-# Shared skill/plugin collection for gateway platforms
-# ---------------------------------------------------------------------------
-
-def _collect_gateway_skill_entries(
-    platform: str,
-    max_slots: int,
-    reserved_names: set[str],
-    desc_limit: int = 100,
-    sanitize_name: "Callable[[str], str] | None" = None,
-) -> tuple[list[tuple[str, str, str]], int]:
-    """Collect plugin + skill entries for a gateway platform.
-
-    Priority order:
-      1. Plugin slash commands (take precedence over skills)
-      2. Built-in skill commands (fill remaining slots, alphabetical)
-
-    Only skills are trimmed when the cap is reached.
-    Hub-installed skills are excluded.  Per-platform disabled skills are
-    excluded.
-
-    Args:
-        platform: Platform identifier for per-platform skill filtering
-            (``"telegram"``, ``"discord"``, etc.).
-        max_slots: Maximum number of entries to return (remaining slots after
-            built-in/core commands).
-        reserved_names: Names already taken by built-in commands.  Mutated
-            in-place as new names are added.
-        desc_limit: Max description length (40 for Telegram, 100 for Discord).
-        sanitize_name: Optional name transform applied before clamping, e.g.
-            :func:`_sanitize_telegram_name` for Telegram.  May return an
-            empty string to signal "skip this entry".
-
-    Returns:
-        ``(entries, hidden_count)`` where *entries* is a list of
-        ``(name, description, cmd_key)`` triples and *hidden_count* is the
-        number of skill entries dropped due to the cap.  ``cmd_key`` is the
-        original ``/skill-name`` key from :func:`get_skill_commands`.
-    """
-    all_entries: list[tuple[str, str, str]] = []
-
-    # --- Tier 1: Plugin slash commands (never trimmed) ---------------------
-    plugin_pairs: list[tuple[str, str]] = []
-    try:
-        from hermes_cli.plugins import get_plugin_manager
-        pm = get_plugin_manager()
-        plugin_cmds = getattr(pm, "_plugin_commands", {})
-        for cmd_name in sorted(plugin_cmds):
-            name = sanitize_name(cmd_name) if sanitize_name else cmd_name
-            if not name:
-                continue
-            desc = plugin_cmds[cmd_name].get("description", "Plugin command")
-            if len(desc) > desc_limit:
-                desc = desc[:desc_limit - 3] + "..."
-            plugin_pairs.append((name, desc))
-    except Exception:
-        pass
-
-    plugin_pairs = _clamp_command_names(plugin_pairs, reserved_names)
-    reserved_names.update(n for n, _ in plugin_pairs)
-    # Plugins have no cmd_key — use empty string as placeholder
-    for n, d in plugin_pairs:
-        all_entries.append((n, d, ""))
-
-    # --- Tier 2: Built-in skill commands (trimmed at cap) -----------------
-    _platform_disabled: set[str] = set()
-    try:
-        from agent.skill_utils import get_disabled_skill_names
-        _platform_disabled = get_disabled_skill_names(platform=platform)
-    except Exception:
-        pass
-
-    skill_triples: list[tuple[str, str, str]] = []
-    try:
-        from agent.skill_commands import get_skill_commands
-        from tools.skills_tool import SKILLS_DIR
-        _skills_dir = str(SKILLS_DIR.resolve())
-        _hub_dir = str((SKILLS_DIR / ".hub").resolve())
-        skill_cmds = get_skill_commands()
-        for cmd_key in sorted(skill_cmds):
-            info = skill_cmds[cmd_key]
-            skill_path = info.get("skill_md_path", "")
-            if not skill_path.startswith(_skills_dir):
-                continue
-            if skill_path.startswith(_hub_dir):
-                continue
-            skill_name = info.get("name", "")
-            if skill_name in _platform_disabled:
-                continue
-            raw_name = cmd_key.lstrip("/")
-            name = sanitize_name(raw_name) if sanitize_name else raw_name
-            if not name:
-                continue
-            desc = info.get("description", "")
-            if len(desc) > desc_limit:
-                desc = desc[:desc_limit - 3] + "..."
-            skill_triples.append((name, desc, cmd_key))
-    except Exception:
-        pass
-
-    # Clamp names; _clamp_command_names works on (name, desc) pairs so we
-    # need to zip/unzip.
-    skill_pairs = [(n, d) for n, d, _ in skill_triples]
-    key_by_pair = {(n, d): k for n, d, k in skill_triples}
-    skill_pairs = _clamp_command_names(skill_pairs, reserved_names)
-
-    # Skills fill remaining slots — only tier that gets trimmed
-    remaining = max(0, max_slots - len(all_entries))
-    hidden_count = max(0, len(skill_pairs) - remaining)
-    for n, d in skill_pairs[:remaining]:
-        all_entries.append((n, d, key_by_pair.get((n, d), "")))
-
-    return all_entries[:max_slots], hidden_count
-
-
-# ---------------------------------------------------------------------------
-# Platform-specific wrappers
-# ---------------------------------------------------------------------------
-
-def telegram_menu_commands(max_commands: int = 100) -> tuple[list[tuple[str, str]], int]:
-    """Return Telegram menu commands capped to the Bot API limit.
-
-    Priority order (higher priority = never bumped by overflow):
-      1. Core CommandDef commands (always included)
-      2. Plugin slash commands (take precedence over skills)
-      3. Built-in skill commands (fill remaining slots, alphabetical)
-
-    Skills are the only tier that gets trimmed when the cap is hit.
-    User-installed hub skills are excluded — accessible via /skills.
-    Skills disabled for the ``"telegram"`` platform (via ``hermes skills
-    config``) are excluded from the menu entirely.
-
-    Returns:
-        (menu_commands, hidden_count) where hidden_count is the number of
-        skill commands omitted due to the cap.
-    """
-    core_commands = list(telegram_bot_commands())
-    reserved_names = {n for n, _ in core_commands}
-    all_commands = list(core_commands)
-
-    remaining_slots = max(0, max_commands - len(all_commands))
-    entries, hidden_count = _collect_gateway_skill_entries(
-        platform="telegram",
-        max_slots=remaining_slots,
-        reserved_names=reserved_names,
-        desc_limit=40,
-        sanitize_name=_sanitize_telegram_name,
-    )
-    # Drop the cmd_key — Telegram only needs (name, desc) pairs.
-    all_commands.extend((n, d) for n, d, _k in entries)
-    return all_commands[:max_commands], hidden_count
-
-
-def discord_skill_commands(
-    max_slots: int,
-    reserved_names: set[str],
-) -> tuple[list[tuple[str, str, str]], int]:
-    """Return skill entries for Discord slash command registration.
-
-    Same priority and filtering logic as :func:`telegram_menu_commands`
-    (plugins > skills, hub excluded, per-platform disabled excluded), but
-    adapted for Discord's constraints:
-
-    - Hyphens are allowed in names (no ``-`` → ``_`` sanitization)
-    - Descriptions capped at 100 chars (Discord's per-field max)
-
-    Args:
-        max_slots: Available command slots (100 minus existing built-in count).
-        reserved_names: Names of already-registered built-in commands.
-
-    Returns:
-        ``(entries, hidden_count)`` where *entries* is a list of
-        ``(discord_name, description, cmd_key)`` triples.  ``cmd_key`` is
-        the original ``/skill-name`` key needed for the slash handler callback.
-    """
-    return _collect_gateway_skill_entries(
-        platform="discord",
-        max_slots=max_slots,
-        reserved_names=set(reserved_names),  # copy — don't mutate caller's set
-        desc_limit=100,
-    )
-
-
-def discord_skill_commands_by_category(
-    reserved_names: set[str],
-) -> tuple[dict[str, list[tuple[str, str, str]]], list[tuple[str, str, str]], int]:
-    """Return skill entries organized by category for Discord ``/skill`` subcommand groups.
-
-    Skills whose directory is nested at least 2 levels under ``SKILLS_DIR``
-    (e.g. ``creative/ascii-art/SKILL.md``) are grouped by their top-level
-    category.  Root-level skills (e.g. ``dogfood/SKILL.md``) are returned as
-    *uncategorized* — the caller should register them as direct subcommands
-    of the ``/skill`` group.
-
-    The same filtering as :func:`discord_skill_commands` is applied: hub
-    skills excluded, per-platform disabled excluded, names clamped.
-
-    Returns:
-        ``(categories, uncategorized, hidden_count)``
-
-        - *categories*: ``{category_name: [(name, description, cmd_key), ...]}``
-        - *uncategorized*: ``[(name, description, cmd_key), ...]``
-        - *hidden_count*: skills dropped due to Discord group limits
-          (25 subcommand groups, 25 subcommands per group)
-    """
-    from pathlib import Path as _P
-
-    _platform_disabled: set[str] = set()
-    try:
-        from agent.skill_utils import get_disabled_skill_names
-        _platform_disabled = get_disabled_skill_names(platform="discord")
-    except Exception:
-        pass
-
-    # Collect raw skill data --------------------------------------------------
-    categories: dict[str, list[tuple[str, str, str]]] = {}
-    uncategorized: list[tuple[str, str, str]] = []
-    _names_used: set[str] = set(reserved_names)
-    hidden = 0
-
-    try:
-        from agent.skill_commands import get_skill_commands
-        from tools.skills_tool import SKILLS_DIR
-        _skills_dir = SKILLS_DIR.resolve()
-        _hub_dir = (SKILLS_DIR / ".hub").resolve()
-        skill_cmds = get_skill_commands()
-
-        for cmd_key in sorted(skill_cmds):
-            info = skill_cmds[cmd_key]
-            skill_path = info.get("skill_md_path", "")
-            if not skill_path:
-                continue
-            sp = _P(skill_path).resolve()
-            # Skip skills outside SKILLS_DIR or from the hub
-            if not str(sp).startswith(str(_skills_dir)):
-                continue
-            if str(sp).startswith(str(_hub_dir)):
-                continue
-
-            skill_name = info.get("name", "")
-            if skill_name in _platform_disabled:
-                continue
-
-            raw_name = cmd_key.lstrip("/")
-            # Clamp to 32 chars (Discord limit)
-            discord_name = raw_name[:32]
-            if discord_name in _names_used:
-                continue
-            _names_used.add(discord_name)
-
-            desc = info.get("description", "")
-            if len(desc) > 100:
-                desc = desc[:97] + "..."
-
-            # Determine category from the relative path within SKILLS_DIR.
-            # e.g. creative/ascii-art/SKILL.md → parts = ("creative", "ascii-art")
-            try:
-                rel = sp.parent.relative_to(_skills_dir)
-            except ValueError:
-                continue
-            parts = rel.parts
-            if len(parts) >= 2:
-                cat = parts[0]
-                categories.setdefault(cat, []).append((discord_name, desc, cmd_key))
-            else:
-                uncategorized.append((discord_name, desc, cmd_key))
-    except Exception:
-        pass
-
-    # Enforce Discord limits: 25 subcommand groups, 25 subcommands each ------
-    _MAX_GROUPS = 25
-    _MAX_PER_GROUP = 25
-
-    trimmed_categories: dict[str, list[tuple[str, str, str]]] = {}
-    group_count = 0
-    for cat in sorted(categories):
-        if group_count >= _MAX_GROUPS:
-            hidden += len(categories[cat])
-            continue
-        entries = categories[cat][:_MAX_PER_GROUP]
-        hidden += max(0, len(categories[cat]) - _MAX_PER_GROUP)
-        trimmed_categories[cat] = entries
-        group_count += 1
-
-    # Uncategorized skills also count against the 25 top-level limit
-    remaining_slots = _MAX_GROUPS - group_count
-    if len(uncategorized) > remaining_slots:
-        hidden += len(uncategorized) - remaining_slots
-        uncategorized = uncategorized[:remaining_slots]
-
-    return trimmed_categories, uncategorized, hidden
 
 
 def slack_subcommand_map() -> dict[str, str]:
@@ -1244,22 +944,6 @@ class SlashCommandCompleter(Completer):
                     display=cmd,
                     display_meta=f"⚡ {short_desc}",
                 )
-
-        # Plugin-registered slash commands
-        try:
-            from hermes_cli.plugins import get_plugin_commands
-            for cmd_name, cmd_info in get_plugin_commands().items():
-                if cmd_name.startswith(word):
-                    desc = str(cmd_info.get("description", "Plugin command"))
-                    short_desc = desc[:50] + ("..." if len(desc) > 50 else "")
-                    yield Completion(
-                        self._completion_text(cmd_name, word),
-                        start_position=-len(word),
-                        display=f"/{cmd_name}",
-                        display_meta=f"🔌 {short_desc}",
-                    )
-        except Exception:
-            pass
 
 
 # ---------------------------------------------------------------------------

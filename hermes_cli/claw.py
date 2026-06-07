@@ -153,33 +153,7 @@ def _warn_if_gateway_running(auto_yes: bool) -> None:
     (e.g. Telegram 409 "terminated by other getUpdates request"). Warn the
     user and let them decide whether to continue.
     """
-    from gateway.status import get_running_pid, read_runtime_status
-
-    if not get_running_pid():
-        return
-
-    data = read_runtime_status() or {}
-    platforms = data.get("platforms") or {}
-    connected = [name for name, info in platforms.items()
-                 if isinstance(info, dict) and info.get("state") == "connected"]
-    if not connected:
-        return
-
-    print()
-    print_error(
-        "Hermes gateway is running with active connections: "
-        + ", ".join(connected)
-    )
-    print_info(
-        "Migrating bot tokens while the gateway is active will cause "
-        "conflicts (Telegram, Discord, and Slack only allow one active "
-        "session per token)."
-    )
-    print_info("Recommendation: stop the gateway first with 'hermes stop'.")
-    print()
-    if not auto_yes and not prompt_yes_no("Continue anyway?", default=False):
-        print_info("Migration cancelled. Stop the gateway and try again.")
-        sys.exit(0)
+    return
 
 # State files commonly found in OpenClaw workspace directories — listed
 # during cleanup to help the user decide whether to archive

@@ -300,11 +300,7 @@ def _read_config_model(profile_dir: Path) -> tuple:
 
 def _check_gateway_running(profile_dir: Path) -> bool:
     """Check if a gateway is running for a given profile directory."""
-    try:
-        from gateway.status import get_running_pid
-        return get_running_pid(profile_dir / "gateway.pid", cleanup_stale=False) is not None
-    except Exception:
-        return False
+    return False
 
 
 def _count_skills(profile_dir: Path) -> int:

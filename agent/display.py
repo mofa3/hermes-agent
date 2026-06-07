@@ -302,35 +302,6 @@ def _display_diff_path(path: Path) -> str:
         return str(path)
 
 
-def _resolve_skill_manage_paths(args: dict) -> list[Path]:
-    """Resolve skill_manage write targets to filesystem paths."""
-    action = args.get("action")
-    name = args.get("name")
-    if not action or not name:
-        return []
-
-    from tools.skill_manager_tool import _find_skill, _resolve_skill_dir
-
-    if action == "create":
-        skill_dir = _resolve_skill_dir(name, args.get("category"))
-        return [skill_dir / "SKILL.md"]
-
-    existing = _find_skill(name)
-    if not existing:
-        return []
-
-    skill_dir = Path(existing["path"])
-    if action in {"edit", "patch"}:
-        file_path = args.get("file_path")
-        return [skill_dir / file_path] if file_path else [skill_dir / "SKILL.md"]
-    if action in {"write_file", "remove_file"}:
-        file_path = args.get("file_path")
-        return [skill_dir / file_path] if file_path else []
-    if action == "delete":
-        files = [path for path in sorted(skill_dir.rglob("*")) if path.is_file()]
-        return files
-    return []
-
 
 def _resolve_local_edit_paths(tool_name: str, function_args: dict | None) -> list[Path]:
     """Resolve local filesystem targets for write-capable tools."""
@@ -344,9 +315,6 @@ def _resolve_local_edit_paths(tool_name: str, function_args: dict | None) -> lis
     if tool_name == "patch":
         path = function_args.get("path")
         return [_resolved_path(path)] if path else []
-
-    if tool_name == "skill_manage":
-        return _resolve_skill_manage_paths(function_args)
 
     return []
 
